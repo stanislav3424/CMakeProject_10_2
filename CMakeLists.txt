@@ -1,7 +1,4 @@
-﻿# CMakeList.txt : CMake project for CMakeProject_10_2, include source and define
-# project specific logic here.
-#
-cmake_minimum_required (VERSION 3.8)
+﻿cmake_minimum_required (VERSION 3.8)
 
 # Enable Hot Reload for MSVC compilers if supported.
 if (POLICY CMP0141)
@@ -11,11 +8,37 @@ endif()
 
 project ("CMakeProject_10_2")
 
-# Add source to this project's executable.
-add_executable (CMakeProject_10_2 "CMakeProject_10_2.cpp"  "EquilateralTriangle.cpp" "EquilateralTriangle.h" "FigureBase.cpp" "FigureBase.h" "FigureCreationException.h" "IsoscelesTriangle.cpp" "IsoscelesTriangle.h" "Parallelogram.cpp" "Parallelogram.h" "QuadrangleFigureBase.cpp" "QuadrangleFigureBase.h" "Rectangle.cpp" "Rectangle.h" "resource.h" "Rhombus.cpp" "Rhombus.h" "RightAngledTriangle.cpp" "RightAngledTriangle.h" "SideAndAngle.h" "Square.cpp" "Square.h" "TriangleFigureBase.cpp" "TriangleFigureBase.h" "CustomException.h")
+# Enable export of all symbols for DLL on Windows
+set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS ON)
+
+# Add source to this project's shared library
+add_library(Figures SHARED 
+  "CMakeProject_10_2.cpp" 
+  "EquilateralTriangle.cpp" "EquilateralTriangle.h" 
+  "FigureBase.cpp" "FigureBase.h" 
+  "FigureCreationException.h" 
+  "IsoscelesTriangle.cpp" "IsoscelesTriangle.h" 
+  "Parallelogram.cpp" "Parallelogram.h" 
+  "QuadrangleFigureBase.cpp" "QuadrangleFigureBase.h" 
+  "Rectangle.cpp" "Rectangle.h" 
+  "resource.h" 
+  "Rhombus.cpp" "Rhombus.h" 
+  "RightAngledTriangle.cpp" "RightAngledTriangle.h" 
+  "SideAndAngle.h" 
+  "Square.cpp" "Square.h" 
+  "TriangleFigureBase.cpp" "TriangleFigureBase.h" 
+  "CustomException.h"
+)
+
+# Add a separate executable for testing the library (optional)
+add_executable (CMakeProject_10_2_Test "CMakeProject_10_2.cpp")
 
 if (CMAKE_VERSION VERSION_GREATER 3.12)
-  set_property(TARGET CMakeProject_10_2 PROPERTY CXX_STANDARD 20)
+  set_property(TARGET Figures PROPERTY CXX_STANDARD 20)
+  set_property(TARGET CMakeProject_10_2_Test PROPERTY CXX_STANDARD 20)
 endif()
+
+# Link the executable with the library
+target_link_libraries(CMakeProject_10_2_Test PRIVATE Figures)
 
 # TODO: Add tests and install targets if needed.
